@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # PostgreSQL — Primary Relational Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: palmistry_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: palmistry_tarot
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d palmistry_tarot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB — Document Store for AI Readings & Feature Detection
+  mongodb:
+    image: mongo:7.0
+    container_name: palmistry_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Redis — Session Store, Rate Limiter & Token Blacklist
+  redis:
+    image: redis:7-alpine
+    container_name: palmistry_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # FastAPI Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: palmistry_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://admin:secret123@postgres:5432/palmistry_tarot
+      - MONGODB_URL=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=dev-secret-key-change-in-production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  mongo_data:
+  redis_data:
