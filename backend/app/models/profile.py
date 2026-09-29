@@ -4,8 +4,7 @@ User Profile Model (SQLAlchemy)
 Stores user details, spiritual interests, goals, and reading preferences.
 """
 
-from sqlalchemy import Column, String, Text, Date, Boolean, DateTime, ForeignKey, func
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy import Column, String, Text, Date, Boolean, DateTime, ForeignKey, Uuid, JSON, func
 from sqlalchemy.orm import relationship
 import uuid
 
@@ -15,8 +14,8 @@ from app.database import Base
 class UserProfile(Base):
     __tablename__ = "user_profiles"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id = Column(Uuid, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
 
     # Personal Data
     first_name = Column(String(100), nullable=True)
@@ -32,8 +31,8 @@ class UserProfile(Base):
     timezone = Column(String(50), nullable=True, default="UTC")
 
     # Spiritual Profile & Goals
-    spiritual_interests = Column(JSONB, default=list)  # ['palmistry', 'tarot', 'astrology']
-    spiritual_goals = Column(JSONB, default=list)      # ['self_discovery', 'career_guidance']
+    spiritual_interests = Column(JSON, default=list)  # ['palmistry', 'tarot', 'astrology']
+    spiritual_goals = Column(JSON, default=list)      # ['self_discovery', 'career_guidance']
     experience_level = Column(String(20), default="beginner")
 
     # Preferences & Customization
@@ -42,7 +41,7 @@ class UserProfile(Base):
     notification_enabled = Column(Boolean, default=True)
 
     # Personal Goal Objects
-    current_goals = Column(JSONB, default=list)
+    current_goals = Column(JSON, default=list)
     bio = Column(Text, nullable=True)
 
     # Timestamps

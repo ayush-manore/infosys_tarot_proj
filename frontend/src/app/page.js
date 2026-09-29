@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles, Hand, CreditCard, Brain, Compass, ArrowRight, ShieldCheck, Star } from 'lucide-react';
+import { Sparkles, Hand, CreditCard, Brain, Compass, ArrowRight, ShieldCheck, Star, Bot, Shuffle, MessageCircle } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -23,8 +23,13 @@ export default function LandingPage() {
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
           <Link href="#features" className="hover:text-amber-300 transition-colors">Features</Link>
-          <Link href="#workflows" className="hover:text-amber-300 transition-colors">How It Works</Link>
-          <Link href="#about" className="hover:text-amber-300 transition-colors">About Platform</Link>
+          <Link href="/draw-cards" className="hover:text-amber-300 transition-colors flex items-center gap-1">
+            <Shuffle className="w-3.5 h-3.5" />Draw Cards
+          </Link>
+          <Link href="/chat" className="hover:text-amber-300 transition-colors flex items-center gap-1">
+            <Bot className="w-3.5 h-3.5" />AI Chat
+          </Link>
+          <Link href="/datasets" className="hover:text-amber-300 transition-colors">Mystic Library</Link>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -91,8 +96,8 @@ export default function LandingPage() {
               <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Tarot Engine</div>
             </div>
             <div className="p-4">
-              <div className="text-3xl font-extrabold text-indigo-400">95%</div>
-              <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Confidence Metric</div>
+              <div className="text-3xl font-extrabold text-indigo-400">Gemini</div>
+              <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">AI Chatbot</div>
             </div>
             <div className="p-4">
               <div className="text-3xl font-extrabold text-emerald-400">RBAC</div>
@@ -159,12 +164,53 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
+
+          {/* NEW: Interactive Features Row */}
+          <div className="grid md:grid-cols-2 gap-8 mt-8">
+            {/* Interactive Card Draw */}
+            <Link href="/draw-cards" className="bg-glass-card p-8 rounded-3xl hover:border-purple-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 group block">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-purple-950/80 border border-purple-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Shuffle className="w-7 h-7 text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Interactive Card Draw</h3>
+                  <p className="text-xs text-purple-300">Draw from a shuffled deck — just like IRL</p>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Pick your cards one by one from a visually fanned deck. Watch each card flip to reveal its face with stunning 3D animations and position-specific interpretations.
+              </p>
+              <span className="inline-flex items-center gap-2 text-purple-300 text-sm font-semibold group-hover:text-amber-300 transition-colors">
+                Try It Now <ArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+
+            {/* AI Chatbot */}
+            <Link href="/chat" className="bg-glass-card p-8 rounded-3xl hover:border-emerald-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/10 group block">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-950/80 border border-emerald-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Bot className="w-7 h-7 text-emerald-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">MysticAI Chatbot</h3>
+                  <p className="text-xs text-emerald-300">Powered by Google Gemini</p>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Chat with an AI spiritual guide for tarot insights, palm reading interpretations, meditation recommendations, and personalized spiritual guidance.
+              </p>
+              <span className="inline-flex items-center gap-2 text-emerald-300 text-sm font-semibold group-hover:text-amber-300 transition-colors">
+                Start Chatting <ArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+          </div>
         </section>
       </main>
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 px-6 lg:px-12 bg-cosmic-950/90 text-center text-xs text-gray-400">
-        <p>© 2026 MysticAI — Palmistry & Tarot Intelligence Platform. Internship Project — Week 1 Milestone Completed.</p>
+        <p>© 2026 MysticAI — Palmistry & Tarot Intelligence Platform. All Milestones Completed. Built with FastAPI, Next.js & Gemini AI.</p>
       </footer>
     </div>
   );

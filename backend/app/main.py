@@ -12,7 +12,7 @@ import time
 
 from app.config import settings
 from app.database import init_postgres, close_postgres, mongodb, redis_manager
-from app.routers import auth, users, profiles
+from app.routers import auth, users, profiles, datasets, readings, analytics, reports, notifications, ai
 
 
 @asynccontextmanager
@@ -23,33 +23,33 @@ async def lifespan(app: FastAPI):
     and cleanly closes connections on shutdown.
     """
     # Startup actions
-    print(f"🚀 Starting {settings.APP_NAME} v{settings.APP_VERSION}")
+    print(f"[START] Starting {settings.APP_NAME} v{settings.APP_VERSION}")
     try:
         await init_postgres()
-        print("✅ PostgreSQL connected and tables initialized.")
+        print("[OK] PostgreSQL connected and tables initialized.")
     except Exception as e:
-        print(f"⚠️ PostgreSQL warning: {e}")
+        print(f"[WARN] PostgreSQL warning: {e}")
 
     try:
         mongodb.connect()
-        print("✅ MongoDB connected.")
+        print("[OK] MongoDB connected.")
     except Exception as e:
-        print(f"⚠️ MongoDB warning: {e}")
+        print(f"[WARN] MongoDB warning: {e}")
 
     try:
         await redis_manager.connect()
-        print("✅ Redis connected.")
+        print("[OK] Redis connected.")
     except Exception as e:
-        print(f"⚠️ Redis warning: {e}")
+        print(f"[WARN] Redis warning: {e}")
 
     yield
 
     # Shutdown actions
-    print("🛑 Shutting down services...")
+    print("[STOP] Shutting down services...")
     await close_postgres()
     mongodb.close()
     await redis_manager.close()
-    print("👋 Shutdown complete.")
+    print("[DONE] Shutdown complete.")
 
 
 # Create FastAPI instance
@@ -76,6 +76,12 @@ app.add_middleware(
 app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 app.include_router(users.router, prefix=settings.API_V1_PREFIX)
 app.include_router(profiles.router, prefix=settings.API_V1_PREFIX)
+app.include_router(datasets.router, prefix=settings.API_V1_PREFIX)
+app.include_router(readings.router, prefix=settings.API_V1_PREFIX)
+app.include_router(analytics.router, prefix=settings.API_V1_PREFIX)
+app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
+app.include_router(notifications.router, prefix=settings.API_V1_PREFIX)
+app.include_router(ai.router, prefix=settings.API_V1_PREFIX)
 
 
 # System Health Check Endpoint

@@ -5,8 +5,7 @@ Tracks palm and tarot reading sessions for users.
 Acts as a relational link to detailed MongoDB document stores.
 """
 
-from sqlalchemy import Column, String, Text, Integer, Numeric, DateTime, ForeignKey, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Text, Integer, Numeric, DateTime, ForeignKey, Uuid, func
 from sqlalchemy.orm import relationship
 import uuid
 
@@ -16,8 +15,8 @@ from app.database import Base
 class ReadingSession(Base):
     __tablename__ = "reading_sessions"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id = Column(Uuid, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     # Session Metadata
     reading_type = Column(String(20), nullable=False)  # 'palm', 'tarot', 'combined'

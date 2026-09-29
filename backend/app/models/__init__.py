@@ -9,5 +9,6 @@ from app.models.role import Role
 from app.models.user import User
 from app.models.profile import UserProfile
 from app.models.reading import ReadingSession
+from app.models.notification import Notification
 
-__all__ = ["Base", "Role", "User", "UserProfile", "ReadingSession"]
+__all__ = ["Base", "Role", "User", "UserProfile", "ReadingSession", "Notification"]

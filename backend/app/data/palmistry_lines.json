@@ -1,0 +1,146 @@
+[
+  {
+    "id": "heart_line",
+    "name": "Heart Line",
+    "alternative_names": ["Love Line", "Mensal Line"],
+    "location": "Upper palm, runs horizontally from below the little finger toward the index/middle finger",
+    "element": "Water",
+    "description": "The Heart Line is the most prominent horizontal line on the upper palm. It reveals your emotional life, romantic tendencies, cardiac health, and how you express feelings. It starts from the edge of the palm under the little finger and curves across toward the index or middle finger.",
+    "associated_traits": ["love", "emotional stability", "romantic nature", "compassion", "relationships"],
+    "interpretations": {
+      "long_and_curved": "You freely express emotions and feelings. You are warm, loving, and have a strong romantic nature with deep relationships.",
+      "short_and_straight": "You are more reserved with emotions and prefer logic over romance. Independent thinker who values freedom.",
+      "wavy": "Multiple relationships and lovers. Emotional ups and downs. Varied romantic experiences throughout life.",
+      "broken": "Emotional trauma or significant heartbreak that shaped your emotional development. Period of emotional healing needed.",
+      "deep_and_clear": "Strong emotional foundation. Deep capacity for love and meaningful relationships.",
+      "faint_or_thin": "Sensitive and delicate emotional nature. May suppress emotions or have difficulty expressing feelings.",
+      "curved_upward": "Verbally expressive about feelings. Good communicator in relationships.",
+      "starts_under_index_finger": "Selective and careful about love. High standards in relationships.",
+      "starts_under_middle_finger": "Selfish tendencies in love. May prioritize personal needs in relationships.",
+      "starts_between_index_and_middle": "Balanced approach to love. Falls in love easily but thoughtfully."
+    }
+  },
+  {
+    "id": "head_line",
+    "name": "Head Line",
+    "alternative_names": ["Wisdom Line", "Mental Line"],
+    "location": "Middle palm, runs horizontally from between thumb and index finger across the palm",
+    "element": "Air",
+    "description": "The Head Line represents your intellectual capacity, thinking style, learning approach, and communication methods. It begins at the edge of the palm between the thumb and index finger and runs across the middle of the palm. This line reveals how you process information and make decisions.",
+    "associated_traits": ["intelligence", "creativity", "communication", "learning style", "decision making"],
+    "interpretations": {
+      "long_and_straight": "Clear, focused, and analytical thinking. Strong logical abilities. You approach problems methodically and rationally.",
+      "short": "You prefer physical achievements over intellectual pursuits. Quick, decisive thinker who doesn't overthink.",
+      "curved_or_sloping": "Creative and artistic mindset. You think imaginatively and enjoy exploring new ideas and possibilities.",
+      "deep_and_clear": "Excellent memory and concentration. Sharp intellect with strong focus and clarity of thought.",
+      "wavy": "Short attention span with difficulty maintaining focus. Scattered thinking but versatile mind.",
+      "broken": "Mental struggles, inconsistencies in thought, or breakthrough moments that changed your worldview.",
+      "forked_end": "Dual mentality — ability to see both sides of an argument. Strong debater and diplomat.",
+      "separate_from_life_line": "Independent thinker with adventurous spirit. You make decisions without being overly influenced by family.",
+      "joined_with_life_line": "Cautious and thoughtful. You carefully consider all options before making decisions.",
+      "chained": "Inner conflict, emotional turmoil, or periods of confusion affecting mental clarity."
+    }
+  },
+  {
+    "id": "life_line",
+    "name": "Life Line",
+    "alternative_names": ["Vitality Line", "Line of Life"],
+    "location": "Curves around the base of the thumb from between the thumb and index finger toward the wrist",
+    "element": "Earth",
+    "description": "Contrary to popular belief, the Life Line does NOT predict how long you will live. Instead, it reflects the quality of your life, vitality, energy levels, and major life changes. It arcs from between the thumb and index finger, curving down around the Mount of Venus (base of thumb) toward the wrist.",
+    "associated_traits": ["vitality", "life energy", "physical health", "major life changes", "well-being"],
+    "interpretations": {
+      "long_and_deep": "Strong vitality and robust health. You have great physical energy and resilience throughout life.",
+      "short_and_shallow": "You may be easily manipulated by others. Focus on building inner strength and independence.",
+      "curving_widely": "Plenty of energy and enthusiasm. You live life fully with great physical stamina.",
+      "close_to_thumb": "You frequently feel tired and often need rest. Lower energy levels may indicate need for lifestyle changes.",
+      "curved_semicircle": "Strength and enthusiasm in abundance. You approach life with vigor and positivity.",
+      "straight_and_close_to_palm_edge": "Cautious personality, especially in relationships. You carefully guard your energy.",
+      "broken": "Major life changes, disruptions, or health transitions. Each break represents a significant turning point.",
+      "multiple_lines": "Extra vitality and life force. You have exceptional stamina and resilience.",
+      "chained": "Multiple health concerns or emotional upheavals throughout life that test your resilience.",
+      "absent": "Very rare. Usually indicates high anxiety or nervous temperament."
+    }
+  },
+  {
+    "id": "fate_line",
+    "name": "Fate Line",
+    "alternative_names": ["Destiny Line", "Line of Saturn", "Career Line"],
+    "location": "Runs vertically from the base of the palm (near wrist) up toward the middle finger",
+    "element": "Earth",
+    "description": "The Fate Line reveals how strongly your life is influenced by external forces versus personal choice. It reflects career path, life direction, and the degree to which circumstances shape your journey. Not everyone has a visible Fate Line — its absence simply means you carve your own path.",
+    "associated_traits": ["career", "destiny", "life path", "ambition", "external influences"],
+    "interpretations": {
+      "deep_and_clear": "Strongly controlled by fate and destiny. Life events seem predestined and career path feels guided by external forces.",
+      "faint": "Self-made individual. You create your own destiny through personal choices and hard work.",
+      "broken": "Career changes or major life redirections. Each break signals a new chapter in your professional life.",
+      "starts_at_base_of_palm": "You developed your career direction early in life. Childhood influences shaped your path.",
+      "starts_at_head_line": "Career direction became clear in your 30s-40s through intellectual pursuits and conscious decisions.",
+      "starts_at_heart_line": "Career success came later in life, shaped by emotional experiences and relationships.",
+      "forked": "Multiple career paths or dual professional interests. You may have two parallel vocations.",
+      "absent": "You are a free spirit who resists being tied to a single career path. Self-determination is your strength.",
+      "joined_to_life_line": "Self-made success that started from family or hometown roots. Career built on personal foundation.",
+      "crosses_life_line": "Strong family support and community backing throughout your career journey."
+    }
+  },
+  {
+    "id": "sun_line",
+    "name": "Sun Line",
+    "alternative_names": ["Apollo Line", "Line of Success", "Line of Brilliance"],
+    "location": "Runs vertically from the upper palm toward the ring finger (Mount of Apollo)",
+    "element": "Fire",
+    "description": "The Sun Line indicates fame, success, creative talent, and public recognition. A strong Sun Line suggests artistic ability and the potential for public acclaim. This line reveals your creative gifts and capacity for bringing light and inspiration to others.",
+    "associated_traits": ["fame", "creativity", "success", "talent", "public image", "artistic ability"],
+    "interpretations": {
+      "deep_and_clear": "Strong creative talent and potential for fame or public recognition. You shine brightly in your chosen field.",
+      "faint": "Modest creative abilities. Success comes through steady effort rather than natural brilliance.",
+      "long": "Lifelong creative pursuit and sustained success. Your talents serve you throughout your entire life.",
+      "short": "Burst of creative success or recognition in a specific period of life rather than sustained fame.",
+      "broken": "Fluctuating fortunes in creative endeavors. Success comes in waves rather than continuously.",
+      "multiple_lines": "Diverse creative talents and multiple avenues for success and recognition.",
+      "starts_at_heart_line": "Creative success and recognition arrive later in life through emotional maturity.",
+      "starts_at_head_line": "Creative success through intellectual pursuits — writing, science, or academic achievements.",
+      "absent": "Success comes through practical means rather than creative or artistic channels. Hard work over talent."
+    }
+  },
+  {
+    "id": "mercury_line",
+    "name": "Mercury Line",
+    "alternative_names": ["Health Line", "Line of Liver", "Line of Health"],
+    "location": "Runs diagonally from below the little finger toward the base of the palm (near Life Line)",
+    "element": "Air",
+    "description": "The Mercury Line relates to health, business acumen, and communication skills. Ironically, the absence of this line is actually a positive sign, indicating robust health. When present, it can reveal digestive health, nervous system vitality, and aptitude for business and commerce.",
+    "associated_traits": ["health", "communication", "business sense", "nervous system", "digestive health"],
+    "interpretations": {
+      "absent": "Excellent health! The best Mercury Line is no Mercury Line at all. Your constitution is naturally strong.",
+      "deep_and_clear": "Strong business acumen and excellent communication skills. Good health management.",
+      "wavy": "Digestive or liver-related health concerns. Monitor diet and stress levels carefully.",
+      "broken": "Periods of health challenges or business setbacks that require attention and recovery.",
+      "straight": "Strong health foundation with good business instincts and persuasive communication abilities.",
+      "touching_life_line": "Health matters may impact your overall vitality at certain life stages. Preventive care recommended.",
+      "not_touching_life_line": "Health challenges remain manageable and don't significantly impact overall quality of life.",
+      "faint": "Mild health sensitivities. Focus on preventive wellness and stress management."
+    }
+  },
+  {
+    "id": "marriage_line",
+    "name": "Marriage Line",
+    "alternative_names": ["Relationship Line", "Line of Union", "Affection Line"],
+    "location": "Short horizontal lines on the edge of the palm between the base of the little finger and the Heart Line",
+    "element": "Water",
+    "description": "The Marriage Lines (often multiple) reveal significant romantic relationships, deep emotional bonds, and partnership dynamics. These small horizontal lines are found on the side of the palm just below the little finger. Their depth, length, and number indicate the nature and intensity of your most meaningful relationships.",
+    "associated_traits": ["marriage", "relationships", "romantic partnerships", "emotional bonds", "commitment"],
+    "interpretations": {
+      "single_deep_line": "One significant, powerful, and lasting romantic relationship or marriage that defines your love life.",
+      "multiple_lines": "Several significant relationships throughout life. Each line represents a meaningful romantic connection.",
+      "long_and_clear": "Long-lasting, fulfilling relationship with deep emotional bonding and mutual commitment.",
+      "short": "Brief but intense romantic connections. Passionate love affairs rather than long-term partnerships.",
+      "curved_upward": "Happy and fulfilling romantic life. Positive relationship energy and emotional satisfaction.",
+      "curved_downward": "Partner may have health or emotional challenges. Relationship may face external hardships.",
+      "forked_at_end": "Possible separation or divergence in relationship. Partners may grow in different directions.",
+      "broken": "A breakup, separation, or period of relationship turbulence followed by reconciliation or new partnership.",
+      "absent": "Highly independent nature. Deep romantic bonds form differently for you — not necessarily through traditional partnerships.",
+      "very_close_to_heart_line": "Early marriage or partnership. Romantic commitment comes at a younger age."
+    }
+  }
+]

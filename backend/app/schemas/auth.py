@@ -20,6 +20,14 @@ class UserRegister(BaseModel):
     confirm_password: str
     first_name: Optional[str] = Field(None, min_length=2, max_length=100)
     last_name: Optional[str] = Field(None, min_length=2, max_length=100)
+    role: Optional[str] = Field("user", description="User role: user, tarot_reader, spiritual_consultant, admin")
+
+    @field_validator('role')
+    def validate_role(cls, v):
+        allowed = ['user', 'tarot_reader', 'spiritual_consultant', 'admin']
+        if v and v not in allowed:
+            raise ValueError(f'Role must be one of: {", ".join(allowed)}')
+        return v or 'user'
 
     @field_validator('confirm_password')
     def passwords_match(cls, v, info):

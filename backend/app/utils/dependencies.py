@@ -100,3 +100,23 @@ def require_role(allowed_roles: list[str]):
             )
         return current_user
     return role_checker
+
+
+def require_permission(permission: str):
+    """
+    Granular Permission-Based Access Control Dependency Factory.
+    Checks individual permission flags in the role's permissions JSON.
+    
+    Usage:
+        @router.post("/readings/palm", dependencies=[Depends(require_permission("can_upload_palm_image"))])
+        async def upload_palm(): ...
+    """
+    async def permission_checker(current_user: User = Depends(get_current_user)) -> User:
+        permissions = current_user.role.permissions or {}
+        if not permissions.get(permission, False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access forbidden. Missing permission: {permission}"
+            )
+        return current_user
+    return permission_checker

@@ -33,15 +33,17 @@ class AuthService:
                 detail="Email address is already registered"
             )
 
-        # 2. Get or create default 'user' role
-        role_result = await db.execute(select(Role).where(Role.name == "user"))
+        # 2. Get or create the selected role
+        selected_role_name = data.role or "user"
+        role_result = await db.execute(select(Role).where(Role.name == selected_role_name))
         user_role = role_result.scalar_one_or_none()
 
         if not user_role:
+            # Fallback: create the role if it doesn't exist
             user_role = Role(
-                name="user",
-                description="Regular platform user",
-                permissions={"can_read": True, "can_create_reading": True}
+                name=selected_role_name,
+                description=f"{selected_role_name.replace('_', ' ').title()} role",
+                permissions={"can_read": True, "can_create_reading": True, "role": selected_role_name}
             )
             db.add(user_role)
             await db.flush()

@@ -5,8 +5,7 @@ Core user authentication and identity record.
 Supports local email/password auth and OAuth2 (Google).
 """
 
-from sqlalchemy import Column, String, Boolean, DateTime, Integer, ForeignKey, UniqueConstraint, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Boolean, DateTime, Integer, ForeignKey, UniqueConstraint, Uuid, func
 from sqlalchemy.orm import relationship
 import uuid
 
@@ -16,10 +15,10 @@ from app.database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=True)  # Nullable for OAuth-only users
-    role_id = Column(UUID(as_uuid=True), ForeignKey("roles.id"), nullable=False, index=True)
+    role_id = Column(Uuid, ForeignKey("roles.id"), nullable=False, index=True)
 
     # OAuth2 Fields
     oauth_provider = Column(String(50), nullable=True)  # e.g., 'google'
