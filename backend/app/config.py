@@ -60,7 +60,11 @@ class Settings(BaseSettings):
 
     # ---- Google Gemini AI ----
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash"
+    GEMINI_MODEL: str = "gemini-1.5-flash"
+
+    # ---- Gmail Email (SMTP) ----
+    GMAIL_USER: str = ""
+    GMAIL_APP_PASSWORD: str = ""
 
     # ---- CORS ----
     CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001,http://localhost:3002,http://127.0.0.1:3002"
@@ -71,7 +75,9 @@ class Settings(BaseSettings):
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
 
     class Config:
-        env_file = ".env"
+        import os
+        from pathlib import Path
+        env_file = str(Path(__file__).resolve().parent.parent / ".env")
         env_file_encoding = "utf-8"
         case_sensitive = True
 

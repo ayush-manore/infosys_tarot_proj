@@ -5,8 +5,10 @@ import Link from 'next/link';
 import {
   Sparkles, CreditCard, ArrowLeft, Loader2, Star, Flame, Droplets,
   Wind, Mountain, Moon, Sun, Zap, CheckCircle2, RotateCcw,
-  MessageCircle, Layers, Crown, Compass, Heart, Briefcase, Calendar
+  MessageCircle, Layers, Crown, Compass, Heart, Briefcase, Calendar, Eye
 } from 'lucide-react';
+import { getTarotCardImage, CARD_BACK_IMAGE } from '../../utils/tarotImages';
+import AstrotalkCardModal from '../../components/AstrotalkCardModal';
 
 const API_BASE = 'http://localhost:8000/api/v1';
 
@@ -30,6 +32,7 @@ export default function TarotReadingPage() {
   const [error, setError] = useState(null);
   const [revealedCards, setRevealedCards] = useState([]);
   const [allRevealed, setAllRevealed] = useState(false);
+  const [activeModalCard, setActiveModalCard] = useState(null);
 
   const performReading = async () => {
     if (!selectedSpread) return;
@@ -125,14 +128,25 @@ export default function TarotReadingPage() {
 
       <main className="max-w-6xl mx-auto px-6 lg:px-12 py-10 relative z-10">
         {/* Title */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
+            Interactive Experience Available
+          </div>
           <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-3">
             Tarot <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-amber-300">Reading Engine</span>
           </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto mb-5">
             Select a spread, ask your question, and let the tarot reveal your path.
-            Cards are shuffled, dealt, and interpreted with position-specific guidance.
           </p>
+
+          <Link
+            href="/draw-cards"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-purple-600 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-purple-600/30 hover:scale-105 transition-all"
+          >
+            <Sparkles className="w-4 h-4 text-amber-200" />
+            Launch Real-Life 3D Deck Shuffle & Manual Draw →
+          </Link>
         </div>
 
         {!result ? (
@@ -266,60 +280,95 @@ export default function TarotReadingPage() {
                     const isRevealed = revealedCards.includes(i);
                     const isReversed = card.orientation === 'reversed';
                     const ElIcon = elementIcons[card.element] || Star;
+                    const cardImg = getTarotCardImage(card);
 
                     return (
                       <div
                         key={i}
                         className={`transition-all duration-700 ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                       >
-                        <div className={`bg-glass p-4 rounded-2xl border transition-all hover:shadow-lg ${
-                          isReversed ? 'border-red-500/20 hover:border-red-500/40 hover:shadow-red-500/10' : 'border-indigo-500/20 hover:border-indigo-500/40 hover:shadow-indigo-500/10'
-                        }`}>
-                          {/* Position Label */}
-                          <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
-                            {card.position}
-                          </div>
+                        <div
+                          onClick={() => setActiveModalCard(card)}
+                          className={`bg-glass-card rounded-2xl border overflow-hidden transition-all hover:shadow-2xl cursor-pointer group flex flex-col justify-between ${
+                            isReversed
+                              ? 'border-red-500/30 hover:border-red-500/60 hover:shadow-red-500/20'
+                              : 'border-amber-500/30 hover:border-amber-400 hover:shadow-amber-500/20'
+                          }`}
+                        >
+                          {/* Real Tarot Card Image Area */}
+                          <div className="relative w-full h-[220px] bg-black/60 overflow-hidden flex items-center justify-center">
+                            <img
+                              src={cardImg}
+                              alt={card.card_name}
+                              className={`w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 ${
+                                isReversed ? 'rotate-180' : ''
+                              }`}
+                              onError={(e) => { e.currentTarget.src = CARD_BACK_IMAGE; }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-cosmic-950 via-transparent to-black/40 pointer-events-none" />
 
-                          {/* Card Name */}
-                          <h3 className={`text-base font-extrabold mb-1 ${isReversed ? 'text-red-300' : 'text-white'}`}>
-                            {card.card_name}
-                            {isReversed && <span className="text-red-400 text-xs ml-1.5 font-semibold">↩ reversed</span>}
-                          </h3>
-
-                          {/* Card Meta */}
-                          <div className="flex items-center gap-2 text-xs text-gray-400 mb-3">
-                            {card.arcana && <span className="capitalize">{card.arcana}</span>}
-                            {card.suit && <><span>·</span><span className="capitalize">{card.suit}</span></>}
-                            {card.element && (
-                              <>
-                                <span>·</span>
-                                <span className="flex items-center gap-0.5">
-                                  <ElIcon className={`w-3 h-3 ${elementColors[card.element] || 'text-gray-400'}`} />
-                                  {card.element}
-                                </span>
-                              </>
-                            )}
-                          </div>
-
-                          {/* Meaning */}
-                          <p className="text-xs text-gray-300 leading-relaxed mb-3">
-                            {card.core_meaning?.substring(0, 150)}{card.core_meaning?.length > 150 ? '...' : ''}
-                          </p>
-
-                          {/* Keywords */}
-                          {card.keywords?.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5">
-                              {card.keywords.slice(0, 4).map(kw => (
-                                <span key={kw} className={`px-2 py-0.5 rounded-md text-[10px] font-medium border ${
-                                  isReversed
-                                    ? 'bg-red-500/10 border-red-500/20 text-red-300'
-                                    : 'bg-indigo-500/10 border-indigo-500/20 text-indigo-300'
-                                }`}>
-                                  {kw}
-                                </span>
-                              ))}
+                            {/* Position & Orientation Pills */}
+                            <div className="absolute top-2 left-2 right-2 flex justify-between items-center pointer-events-none">
+                              <span className="px-2 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-amber-400/50 text-[9px] font-black text-amber-300 uppercase tracking-wider">
+                                {card.position}
+                              </span>
+                              <span className={`px-2 py-0.5 rounded-full backdrop-blur-md border text-[9px] font-bold uppercase tracking-wider ${
+                                isReversed
+                                  ? 'bg-red-950/90 border-red-500/60 text-red-300'
+                                  : 'bg-emerald-950/90 border-emerald-500/60 text-emerald-300'
+                              }`}>
+                                {isReversed ? '↩ Rev' : '★ Upr'}
+                              </span>
                             </div>
-                          )}
+                          </div>
+
+                          {/* Card Info */}
+                          <div className="p-4 flex-1 flex flex-col justify-between">
+                            <div>
+                              <h3 className={`text-base font-extrabold mb-1 ${isReversed ? 'text-red-300' : 'text-white'}`}>
+                                {card.card_name}
+                              </h3>
+
+                              {/* Card Meta */}
+                              <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-2.5 flex-wrap">
+                                {card.arcana && <span className="capitalize">{card.arcana}</span>}
+                                {card.suit && <><span>·</span><span className="capitalize">{card.suit}</span></>}
+                                {card.element && (
+                                  <>
+                                    <span>·</span>
+                                    <span className="flex items-center gap-0.5">
+                                      <ElIcon className={`w-3 h-3 ${elementColors[card.element] || 'text-gray-400'}`} />
+                                      {card.element}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+
+                              {/* Meaning */}
+                              <p className="text-xs text-gray-300 leading-relaxed mb-3 line-clamp-3">
+                                {card.core_meaning}
+                              </p>
+                            </div>
+
+                            {/* Keywords & Inspect CTA */}
+                            <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                              <div className="flex flex-wrap gap-1">
+                                {card.keywords?.slice(0, 2).map(kw => (
+                                  <span key={kw} className={`px-1.5 py-0.5 rounded text-[9px] font-medium border ${
+                                    isReversed
+                                      ? 'bg-red-500/10 border-red-500/20 text-red-300'
+                                      : 'bg-amber-500/10 border-amber-500/20 text-amber-300'
+                                  }`}>
+                                    {kw}
+                                  </span>
+                                ))}
+                              </div>
+                              <span className="text-[10px] text-amber-300 font-semibold group-hover:text-amber-200 flex items-center gap-1">
+                                <Eye className="w-3 h-3" />
+                                Inspect
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     );
@@ -404,6 +453,12 @@ export default function TarotReadingPage() {
           </div>
         )}
       </main>
+
+      {/* Astrotalk Card Detail Modal */}
+      <AstrotalkCardModal
+        card={activeModalCard}
+        onClose={() => setActiveModalCard(null)}
+      />
     </div>
   );
 }

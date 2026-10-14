@@ -7,6 +7,7 @@ import {
   TrendingUp, Activity, Eye, FileText, Filter, ArrowUpRight,
   Layers, Shuffle, PieChart, CalendarDays, MessageSquare, ThumbsUp
 } from 'lucide-react';
+import { getTarotCardImage } from '../../utils/tarotImages';
 
 const recentSessions = [
   { id: 'S-1042', seeker: 'Priya M.', spread: '3-Card Spread', cards: ['The Fool', 'Queen of Cups', 'Ten of Pentacles'], orientation: ['upright', 'reversed', 'upright'], rating: 5, date: '2026-08-31', duration: '12 min', status: 'completed' },
@@ -257,18 +258,31 @@ export default function TarotReaderDashboard({ user }) {
               {/* Cards Grid */}
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {readerResult.cards.map((card, idx) => (
-                  <div key={idx} className="bg-white/5 border border-white/10 p-4 rounded-xl space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-bold text-indigo-400">{card.position}</span>
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                        card.orientation === 'reversed' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-                      }`}>
-                        {card.orientation}
-                      </span>
+                  <div key={idx} className="bg-white/5 border border-white/10 p-4 rounded-xl space-y-3 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] uppercase font-bold text-amber-400">{card.position}</span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          card.orientation === 'reversed' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                        }`}>
+                          {card.orientation}
+                        </span>
+                      </div>
+                      <div className="flex gap-3 items-center mb-2">
+                        <div className="w-14 h-22 rounded-lg overflow-hidden border border-amber-400/50 shadow-md bg-black shrink-0">
+                          <img
+                            src={getTarotCardImage(card)}
+                            alt={card.card_name}
+                            className={`w-full h-full object-cover ${card.orientation === 'reversed' ? 'rotate-180' : ''}`}
+                          />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-bold text-sm leading-tight">{card.card_name}</h4>
+                          <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mt-1">{card.position_interpretation || card.core_meaning}</p>
+                        </div>
+                      </div>
                     </div>
-                    <h4 className="text-white font-bold text-base">{card.card_name}</h4>
-                    <p className="text-gray-400 text-xs leading-relaxed">{card.position_interpretation || card.core_meaning}</p>
-                    <div className="flex flex-wrap gap-1 pt-1">
+                    <div className="flex flex-wrap gap-1 pt-1 border-t border-white/5">
                       {(card.keywords || []).slice(0, 3).map(kw => (
                         <span key={kw} className="px-1.5 py-0.5 rounded bg-white/5 text-[10px] text-gray-300 border border-white/5">
                           {kw}

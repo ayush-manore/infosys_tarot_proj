@@ -4,7 +4,7 @@ services:
   # PostgreSQL — Primary Relational Database
   postgres:
     image: postgres:16-alpine
-    container_name: palmistry_postgres
+    container_name: mysticai_postgres
     restart: always
     environment:
       POSTGRES_DB: palmistry_tarot
@@ -23,7 +23,7 @@ services:
   # MongoDB — Document Store for AI Readings & Feature Detection
   mongodb:
     image: mongo:7.0
-    container_name: palmistry_mongodb
+    container_name: mysticai_mongodb
     restart: always
     ports:
       - "27017:27017"
@@ -33,19 +33,20 @@ services:
   # Redis — Session Store, Rate Limiter & Token Blacklist
   redis:
     image: redis:7-alpine
-    container_name: palmistry_redis
+    container_name: mysticai_redis
     restart: always
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    command: redis-server --appendonly yes
 
   # FastAPI Backend Service
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: palmistry_backend
+    container_name: mysticai_backend
     restart: always
     ports:
       - "8000:8000"
@@ -54,6 +55,8 @@ services:
       - MONGODB_URL=mongodb://mongodb:27017
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=dev-secret-key-change-in-production
+      - APP_ENV=production
+      - CORS_ORIGINS=http://localhost:3000,https://mysticai.vercel.app
     depends_on:
       postgres:
         condition: service_healthy
@@ -61,8 +64,35 @@ services:
         condition: service_started
       redis:
         condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Next.js Frontend Service (optional — can use Vercel instead)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mysticai_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE=http://backend:8000/api/v1
+    depends_on:
+      backend:
+        condition: service_healthy
+    profiles:
+      - full-stack
 
 volumes:
   postgres_data:
   mongo_data:
   redis_data:
+
+networks:
+  default:
+    name: mysticai_network

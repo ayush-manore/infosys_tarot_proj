@@ -165,6 +165,7 @@ class TarotService:
             "description": card.get("description", ""),
             "position_interpretation": position_context,
             "image_key": card["id"],  # Used for frontend image lookup
+            "image_url": f"/tarot/{card['id']}.jpg",  # Direct public asset URL
         }
 
         # Add question-specific insight if provided

@@ -213,43 +213,68 @@ async def ai_interpret_reading(
 # AI Recommendation Engine
 # ═══════════════════════════════════════════════════════════════════
 
+@router.get("/recommendations", response_model=AIRecommendationResponse)
 @router.post("/recommendations", response_model=AIRecommendationResponse)
 async def get_ai_recommendations(
-    request: AIRecommendationRequest,
+    request: Optional[AIRecommendationRequest] = None,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """
     Generate AI-powered personalized recommendations.
 
-    Based on the user's personality profile, reading history,
+    Based on the user's actual reading history, personality profile,
     and spiritual goals. Returns categorized recommendations
-    with actionable practices and rituals.
+    with actionable practices, daily rituals, and crystal/affirmation guidance.
     """
-    # Build personality profile from user context
-    personality_profile = {
-        "user_id": str(current_user.id),
-        "email": current_user.email,
-        "traits": {
+    from app.services.reading_service import ReadingService
+    from app.services.palm_service import PalmService
+
+    # 1. Fetch user's real reading history
+    reading_history = await ReadingService.get_reading_history(db, current_user.id, limit=10)
+
+    # 2. Build user context from profile
+    user_context = _build_user_context(current_user)
+
+    # 3. Build personality & palm trait profile based on user
+    palm_analysis = PalmService.analyze_palm(user_seed=str(current_user.id))
+    trait_scores = {
+        t["trait"]: t["score"]
+        for t in palm_analysis.get("personality_traits", [])
+    }
+    if not trait_scores:
+        trait_scores = {
             "Emotional Intelligence": 75,
             "Analytical Thinking": 70,
             "Creative Expression": 80,
             "Vitality & Resilience": 72,
             "Career Drive": 68,
             "Intuitive Awareness": 78,
-        },
+        }
+
+    personality_profile = {
+        "user_id": str(current_user.id),
+        "email": current_user.email,
+        "traits": trait_scores,
+        "hand_element": palm_analysis.get("hand_shape", {}).get("element", "Water"),
+        "hand_type": palm_analysis.get("hand_shape", {}).get("type", "Intuitive"),
     }
 
-    user_context = _build_user_context(current_user)
-
+    # 4. Generate AI recommendations
     result = await GeminiService.generate_ai_recommendations(
         personality_profile=personality_profile,
+        reading_history=reading_history,
         user_context=user_context,
     )
 
+    # Attach reading metrics to response
+    if isinstance(result.get("ai_recommendations"), dict):
+        result["ai_recommendations"]["readings_analyzed"] = len(reading_history)
+        result["ai_recommendations"]["has_reading_history"] = len(reading_history) > 0
+
     return AIRecommendationResponse(
         status="success",
-        message="AI recommendations generated",
+        message="AI recommendations generated based on your readings and profile",
         data=result,
     )
 
@@ -437,16 +462,19 @@ async def ai_status():
 def _build_user_context(user: User) -> Dict[str, Any]:
     """Build user context dict from the authenticated user object."""
     context = {
-        "user_id": str(user.id),
-        "email": user.email,
+        "user_id": str(getattr(user, "id", "")),
+        "email": getattr(user, "email", ""),
     }
 
-    # Add profile data if available
-    if hasattr(user, "profile") and user.profile:
-        profile = user.profile
-        context["spiritual_goals"] = getattr(profile, "spiritual_goals", []) or []
-        context["spiritual_interests"] = getattr(profile, "spiritual_interests", []) or []
-        context["experience_level"] = getattr(profile, "experience_level", "beginner")
+    # Safely add profile data if already loaded in session
+    try:
+        if "profile" in user.__dict__ and user.__dict__["profile"]:
+            profile = user.__dict__["profile"]
+            context["spiritual_goals"] = getattr(profile, "spiritual_goals", []) or []
+            context["spiritual_interests"] = getattr(profile, "spiritual_interests", []) or []
+            context["experience_level"] = getattr(profile, "experience_level", "beginner")
+    except Exception:
+        pass
 
     return context
 

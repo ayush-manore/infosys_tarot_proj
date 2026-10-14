@@ -66,9 +66,11 @@ async def get_current_user(
     except ValueError:
         raise credentials_exception
 
-    # Query user with eager-loaded role
+    # Query user with eager-loaded role and profile
     result = await db.execute(
-        select(User).options(joinedload(User.role)).where(User.id == user_id)
+        select(User)
+        .options(joinedload(User.role), joinedload(User.profile))
+        .where(User.id == user_id)
     )
     user = result.scalar_one_or_none()
 

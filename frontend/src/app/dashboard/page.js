@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, User, LogOut, Shield, Compass, BookOpen, Layers, Shuffle, Bot } from 'lucide-react';
+import { Sparkles, User, LogOut, Shield, BookOpen, Shuffle, Bot, Brain, Sun, Moon, Bell } from 'lucide-react';
 
 import UserDashboard from './UserDashboard';
 import TarotReaderDashboard from './TarotReaderDashboard';
@@ -13,12 +13,26 @@ export default function DashboardPage() {
   const [user, setUser] = useState(null);
   const [selectedRole, setSelectedRole] = useState('user');
   const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    const isDark = saved ? saved === 'dark' : true;
+    setDarkMode(isDark);
+    document.documentElement.classList.toggle('light-mode', !isDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+    document.documentElement.classList.toggle('light-mode', !next);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (!token) {
-      // Demo fallback user if not logged in
-      const defaultUser = { email: 'ayush@example.com', role: { name: 'user' } };
+      const defaultUser = { email: 'seeker@mystic.ai', role: { name: 'user' } };
       setUser(defaultUser);
       setSelectedRole('user');
       setLoading(false);
@@ -32,6 +46,7 @@ export default function DashboardPage() {
       .then(data => {
         if (data.status === 'success') {
           setUser(data.data);
+          // Role comes from the JWT / backend — cannot be overridden from UI
           const roleName = data.data.role?.name || 'user';
           setSelectedRole(roleName);
         } else {
@@ -46,15 +61,17 @@ export default function DashboardPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const personaAccounts = {
-    user: { email: 'seeker@mystic.ai', label: 'Seeker', color: 'bg-purple-600', badge: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
-    tarot_reader: { email: 'reader@mystic.ai', label: 'Tarot Reader', color: 'bg-indigo-600', badge: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
-    spiritual_consultant: { email: 'consultant@mystic.ai', label: 'Consultant', color: 'bg-emerald-600', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-    admin: { email: 'admin@mystic.ai', label: 'Super Admin', color: 'bg-red-600', badge: 'bg-red-500/20 text-red-300 border-red-500/30' },
+  const roleLabels = {
+    user: { label: 'Seeker', badge: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
+    tarot_reader: { label: 'Tarot Reader', badge: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+    spiritual_consultant: { label: 'Consultant', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+    admin: { label: 'Super Admin', badge: 'bg-red-500/20 text-red-300 border-red-500/30' },
   };
 
   const handleSwitchPersona = async (roleId) => {
-    const target = personaAccounts[roleId];
+    // SECURITY: Role switching disabled — role is determined by backend JWT only
+    return;
+    const target = roleLabels[roleId];
     if (!target) return;
     setLoading(true);
     try {
@@ -118,27 +135,16 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        {/* Real Persona Switcher Bar */}
-        <div className="hidden lg:flex items-center bg-white/5 border border-white/10 rounded-2xl p-1 gap-1">
-          <span className="text-[11px] font-bold text-gray-400 uppercase px-2.5 flex items-center gap-1">
-            <Shield className="w-3 h-3 text-purple-400" /> Switch Active Persona:
-          </span>
-          {Object.entries(personaAccounts).map(([id, info]) => (
-            <button
-              key={id}
-              onClick={() => handleSwitchPersona(id)}
-              className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
-                selectedRole === id
-                  ? `${info.color} text-white shadow-md`
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {info.label}
-            </button>
-          ))}
+        {/* Branding center spacer */}
+        <div className="hidden lg:flex items-center gap-2 text-[11px] font-bold text-purple-400 uppercase tracking-widest">
+          <Shield className="w-3 h-3" /> Secure Role-Based Access
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3">
+          <Link href="/ai-insights" className="hidden sm:flex items-center gap-1.5 text-xs text-white bg-gradient-to-r from-purple-600/80 to-indigo-600/80 border border-purple-500/40 px-3 py-1.5 rounded-xl transition-colors hover:from-purple-600 hover:to-indigo-600 font-semibold shadow-md shadow-purple-900/30">
+            <Brain className="w-3.5 h-3.5 text-amber-300" />
+            AI Insights
+          </Link>
           <Link href="/draw-cards" className="hidden sm:flex items-center gap-1.5 text-xs text-gray-300 hover:text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl transition-colors">
             <Shuffle className="w-3.5 h-3.5 text-purple-300" />
             Draw Cards
@@ -147,10 +153,15 @@ export default function DashboardPage() {
             <Bot className="w-3.5 h-3.5 text-emerald-300" />
             AI Chat
           </Link>
-          <Link href="/datasets" className="hidden sm:flex items-center gap-1.5 text-xs text-gray-300 hover:text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl transition-colors">
-            <BookOpen className="w-3.5 h-3.5 text-amber-300" />
-            Knowledge Base
+          <Link href="/notifications" className="hidden sm:flex items-center gap-1.5 text-xs text-gray-300 hover:text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl transition-colors">
+            <Bell className="w-3.5 h-3.5 text-amber-300" />
+            Notifications
           </Link>
+          {/* Theme Toggle */}
+          <button onClick={toggleTheme} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className="flex items-center justify-center w-8 h-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+            {darkMode ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+          </button>
           <Link href="/profile" className="flex items-center gap-1.5 text-xs text-gray-300 hover:text-white transition-colors">
             <User className="w-4 h-4 text-purple-400" />
             Profile
@@ -165,47 +176,27 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* RBAC Active Identity & Powers Banner */}
-      <div className="bg-white/[0.02] border-b border-white/5 px-6 md:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-gray-400">Authenticated Session:</span>
-          <span className="font-semibold text-white">{user?.email}</span>
-          <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${personaAccounts[selectedRole]?.badge || 'bg-purple-500/20 text-purple-300 border-purple-500/30'}`}>
-            {user?.role?.name ? user.role.name.replace('_', ' ') : selectedRole}
-          </span>
-          <span className="hidden md:inline text-gray-500">|</span>
-          <span className="hidden md:flex items-center gap-1 text-gray-400">
-            <Shield className="w-3 h-3 text-emerald-400" />
-            Active Backend Powers:
-          </span>
-          <div className="hidden md:flex flex-wrap gap-1">
-            {activePermissionList.slice(0, 4).map((p) => (
-              <span key={p} className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 text-[10px] border border-emerald-500/20 capitalize">
-                ✓ {p}
-              </span>
-            ))}
-            {activePermissionList.length > 4 && (
-              <span className="px-2 py-0.5 rounded bg-white/5 text-gray-400 text-[10px]">
-                +{activePermissionList.length - 4} more
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Switcher */}
-        <div className="flex lg:hidden items-center gap-1 overflow-x-auto">
-          {Object.entries(personaAccounts).map(([id, info]) => (
-            <button
-              key={id}
-              onClick={() => handleSwitchPersona(id)}
-              className={`px-2 py-1 rounded text-[11px] font-semibold ${
-                selectedRole === id ? `${info.color} text-white` : 'bg-white/5 text-gray-400'
-              }`}
-            >
-              {info.label}
-            </button>
-          ))}
-        </div>
+      {/* Identity Banner — read-only, role locked to JWT */}
+      <div className="bg-white/[0.02] border-b border-white/5 px-6 md:px-8 py-2 flex flex-wrap items-center gap-3 text-xs">
+        <Shield className="w-3 h-3 text-emerald-400" />
+        <span className="text-gray-400">Session:</span>
+        <span className="font-semibold text-white">{user?.email}</span>
+        <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${roleLabels[selectedRole]?.badge || 'bg-purple-500/20 text-purple-300 border-purple-500/30'}`}>
+          {roleLabels[selectedRole]?.label || selectedRole}
+        </span>
+        {activePermissionList.length > 0 && (
+          <>
+            <span className="text-gray-600">|</span>
+            <div className="hidden md:flex flex-wrap gap-1">
+              {activePermissionList.slice(0, 4).map((p) => (
+                <span key={p} className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 text-[10px] border border-emerald-500/20 capitalize">✓ {p}</span>
+              ))}
+              {activePermissionList.length > 4 && (
+                <span className="px-2 py-0.5 rounded bg-white/5 text-gray-400 text-[10px]">+{activePermissionList.length - 4} more</span>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Main Role-Specific View */}

@@ -37,3 +37,9 @@ Thumbs.db
 .coverage
 htmlcov/
 .pytest_cache/
+
+# Temp Office lock files
+~$*
+
+# Agents / AI
+.agents/
