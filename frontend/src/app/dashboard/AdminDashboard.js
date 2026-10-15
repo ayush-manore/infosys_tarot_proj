@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -79,7 +80,7 @@ export default function AdminDashboard({ user }) {
     
     // 1. Fetch real user list from DB
     if (token) {
-      fetch('http://localhost:8000/api/v1/users', {
+      fetch(`${API_BASE}/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
         .then(res => res.ok ? res.json() : null)
@@ -100,7 +101,7 @@ export default function AdminDashboard({ user }) {
     }
 
     // 2. Fetch catalog stats
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/datasets/catalog/stats`)
+    fetch(`${API_BASE}/datasets/catalog/stats`)
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.data) {
@@ -115,7 +116,7 @@ export default function AdminDashboard({ user }) {
     const token = localStorage.getItem('access_token');
     try {
       if (token) {
-        const res = await fetch(`http://localhost:8000/api/v1/users/${userId}/role`, {
+        const res = await fetch(`${API_BASE}/users/${userId}/role`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

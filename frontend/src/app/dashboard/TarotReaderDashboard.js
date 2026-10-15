@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -57,7 +58,7 @@ export default function TarotReaderDashboard({ user }) {
         ? `[Client: ${clientName}] ${clientQuestion || 'General spiritual guidance'}` 
         : (clientQuestion || 'General spiritual guidance');
 
-      const res = await fetch('http://localhost:8000/api/v1/readings/tarot', {
+      const res = await fetch(`${API_BASE}/readings/tarot`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

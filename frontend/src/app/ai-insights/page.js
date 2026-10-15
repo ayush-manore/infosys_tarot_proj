@@ -1,10 +1,11 @@
 ﻿'use client';
+import { API_BASE as API, authHeader } from '@/utils/api';
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Sparkles, Brain, TrendingUp, Target, Heart, Briefcase, Leaf, Star, Zap, Eye, RefreshCw, ArrowRight, ChevronDown, ChevronUp, BookOpen, Moon, Compass, Award, Activity, Shield, Bot, Hand, CreditCard, BarChart3, Clock, CheckCircle, AlertCircle, Lightbulb, Flame, ChevronRight } from 'lucide-react';
 
-const API = 'http://localhost:8000/api/v1';
+
 function authHeader() {
   if (typeof window === 'undefined') return {};
   const t = localStorage.getItem('access_token');

@@ -16,6 +16,8 @@ COPY . .
 
 # Build Next.js application
 ENV NEXT_TELEMETRY_DISABLED 1
+ARG NEXT_PUBLIC_API_BASE=http://localhost:8000/api/v1
+ENV NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE
 RUN npm run build
 
 # Production image, copy all the files and run next

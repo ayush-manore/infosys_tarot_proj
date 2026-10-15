@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ import {
   Camera, CameraOff, Video, RefreshCw, Scan, Timer, RotateCw, Check
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+
 
 export default function PalmReadingPage() {
   const [file, setFile] = useState(null);

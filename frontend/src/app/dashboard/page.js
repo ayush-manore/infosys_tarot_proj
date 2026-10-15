@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -39,7 +40,7 @@ export default function DashboardPage() {
       return;
     }
 
-    fetch('http://localhost:8000/api/v1/users/me', {
+    fetch(`${API_BASE}/users/me`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -75,7 +76,7 @@ export default function DashboardPage() {
     if (!target) return;
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/v1/auth/login', {
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: target.email, password: 'password123' })
@@ -84,7 +85,7 @@ export default function DashboardPage() {
       if (res.ok) {
         const token = data.data.tokens.access_token;
         localStorage.setItem('access_token', token);
-        const meRes = await fetch('http://localhost:8000/api/v1/users/me', {
+        const meRes = await fetch(`${API_BASE}/users/me`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const meData = await meRes.json();

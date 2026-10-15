@@ -1,10 +1,11 @@
 'use client';
+import { API_BASE as API, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Bell, Mail, Moon, Sun, Clock, Calendar, Sparkles, CheckCircle, AlertCircle, ChevronRight, RefreshCw, Send, Shield, Brain, Hand, CreditCard } from 'lucide-react';
 
-const API = 'http://localhost:8000/api/v1';
+
 
 function authHeader() {
   if (typeof window === 'undefined') return {};

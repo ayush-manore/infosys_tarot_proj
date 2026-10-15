@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ const SUIT_CONFIG = {
   pentacles: { label: 'Pentacles', icon: Mountain, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', glow: 'shadow-emerald-500/20' },
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
 
 export default function DatasetsPage() {
   const [activeTab, setActiveTab] = useState('tarot');

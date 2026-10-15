@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -8,7 +9,7 @@ import {
   Loader2, Wand2, ChevronDown
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+
 
 /* ── Quick Prompts ──────────────────────────────────────── */
 const quickPrompts = [

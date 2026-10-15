@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -51,7 +52,7 @@ export default function UserDashboard({ user }) {
     if (!token) return;
 
     // Fetch user's real reading history from FastAPI backend
-    fetch('http://localhost:8000/api/v1/readings/history', {
+    fetch(`${API_BASE}/readings/history`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.ok ? res.json() : null)
@@ -72,7 +73,7 @@ export default function UserDashboard({ user }) {
       .catch(() => {});
 
     // Fetch daily guidance card
-    fetch('http://localhost:8000/api/v1/readings/tarot/daily', {
+    fetch(`${API_BASE}/readings/tarot/daily`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.ok ? res.json() : null)

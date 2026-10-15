@@ -1,11 +1,12 @@
 'use client';
+import { API_BASE as API, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Sparkles, FileText, Download, Eye, ChevronDown, BarChart3, Brain, Hand, CreditCard, ArrowLeft, Loader2, RefreshCw, Compass } from 'lucide-react';
 import { getTarotCardImage } from '../../utils/tarotImages';
 
-const API = 'http://localhost:8000/api/v1';
+
 
 const REPORT_TYPES = [
   { id: 'spiritual-guidance', label: 'Spiritual Guidance', icon: Sparkles, color: 'from-violet-500 to-fuchsia-500', description: 'Complete spiritual synthesis combining palmistry, tarot, and AI insight scoring.' },

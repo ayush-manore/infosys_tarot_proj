@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ const SUIT_ICONS = {
   pentacles: { Icon: Mountain, color: 'text-emerald-400', gradient: 'from-emerald-600 to-teal-600' },
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
 
 export default function TarotCardDetailPage({ params }) {
   const { id } = params;

@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ import {
 import { getTarotCardImage, CARD_BACK_IMAGE } from '../../utils/tarotImages';
 import AstrotalkCardModal from '../../components/AstrotalkCardModal';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+
 
 /* ── Spread Definitions ─────────────────────────────────────── */
 const spreads = [

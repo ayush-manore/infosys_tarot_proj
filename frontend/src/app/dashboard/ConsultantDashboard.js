@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -54,7 +55,7 @@ export default function ConsultantDashboard({ user }) {
     const token = localStorage.getItem('access_token');
     try {
       // Call combined reading endpoint or tarot reading
-      const res = await fetch('http://localhost:8000/api/v1/readings/combined', {
+      const res = await fetch(`${API_BASE}/readings/combined`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

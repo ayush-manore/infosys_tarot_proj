@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ import {
   TrendingUp, Award, ExternalLink, Loader2, BookOpen
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+
 
 export default function ProfilePage() {
   const [activeView, setActiveView] = useState('profile'); // 'profile' or 'recommendations'

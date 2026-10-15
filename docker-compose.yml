@@ -56,7 +56,12 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=dev-secret-key-change-in-production
       - APP_ENV=production
-      - CORS_ORIGINS=http://localhost:3000,https://mysticai.vercel.app
+      - DEBUG=false
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000,http://127.0.0.1:3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL=gemini-1.5-flash
+      - GMAIL_USER=${GMAIL_USER:-}
+      - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD:-}
     depends_on:
       postgres:
         condition: service_healthy
@@ -71,22 +76,22 @@ services:
       retries: 3
       start_period: 40s
 
-  # Next.js Frontend Service (optional — can use Vercel instead)
+  # Next.js Frontend Service
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_BASE=http://localhost:8000/api/v1
     container_name: mysticai_frontend
     restart: always
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_BASE=http://backend:8000/api/v1
+      - NEXT_PUBLIC_API_BASE=http://localhost:8000/api/v1
     depends_on:
       backend:
         condition: service_healthy
-    profiles:
-      - full-stack
 
 volumes:
   postgres_data:

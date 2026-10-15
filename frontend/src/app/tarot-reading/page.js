@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE, authHeader } from '@/utils/api';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ import {
 import { getTarotCardImage, CARD_BACK_IMAGE } from '../../utils/tarotImages';
 import AstrotalkCardModal from '../../components/AstrotalkCardModal';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+
 
 const spreadOptions = [
   { id: 'single', name: 'Single Card', cards: 1, icon: Star, color: 'amber', desc: 'Quick insight for a specific question' },
